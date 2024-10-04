@@ -23,12 +23,28 @@ const createApplication = async (req, res) => {
 // Retrieves all applications for the authenticated user.
 const getApplications = async (req, res) => {
     try {
-        const applications = await Application.find({user: req.user._id});
-        res.json(applications);
-
-    } catch (err) {
-        res.status(500).json({message: err.message});
-    }
+        const { company, position, status } = req.query; 
+        
+        const query = {
+          user: req.user._id, 
+        };
+    
+        // Add search filters to the query if they exist
+        if (company) {
+          query.company = { $regex: company, $options: 'i' };
+        }
+        if (position) {
+          query.position = { $regex: position, $options: 'i' };
+        }
+        if (status) {
+          query.status = status;
+        }
+    
+        const applications = await Application.find(query);
+        res.json(applications); 
+      } catch (err) {
+        res.status(500).json({ message: err.message });
+      }
 };
 
 // Updates an existing application for the authenticated user.
