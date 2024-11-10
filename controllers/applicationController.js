@@ -40,7 +40,7 @@ const getApplications = async (req, res) => {
           query.status = status;
         }
     
-        const applications = await Application.find(query);
+        const applications = await Application.find(query).select('company position status dateApplied');
         res.json(applications); 
       } catch (err) {
         res.status(500).json({ message: err.message });
@@ -53,7 +53,7 @@ const updateApplication = async (req, res) => {
     const {company, position, status} = req.body;
     
     try {
-        const application = await Application.findById(id);
+        const application = await Application.findById(id).select('user company position status');
 
         if (!application) {
             return res.status(404).json({message: 'Application not found'});

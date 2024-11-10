@@ -5,6 +5,7 @@ const ApplicationSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true,
+        index: true,
     },
     company: {
         type: String,
@@ -19,6 +20,7 @@ const ApplicationSchema = new mongoose.Schema({
         required: true,
         enum: ['applied', 'interviewing','offer','rejected'],
         default: 'applied',
+        index: true,
     },
     dateApplied: {
         type: Data,
